@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="6Lz-QQ-FDM">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -12,19 +12,35 @@
         <!--Load Image-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="copycat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoadImageViewController" id="BYZ-38-t0r" customClass="LoadImageViewController" customModule="copycat" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bkF-xb-rba">
+                                <rect key="frame" x="147" y="353" width="120" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="PzD-Y5-cRb"/>
+                                </constraints>
+                                <state key="normal" title="Load Image"/>
+                                <connections>
+                                    <action selector="loadImageButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NRu-y0-UVv"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="bkF-xb-rba" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="UvY-fI-Xtw"/>
+                            <constraint firstItem="bkF-xb-rba" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="aMZ-Ix-xfF"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Load Image" id="bEI-jS-QCQ"/>
                     <connections>
-                        <segue destination="1hg-rB-YEb" kind="show" id="XoY-ME-ury"/>
+                        <segue destination="1hg-rB-YEb" kind="show" identifier="toCopycat" id="XoY-ME-ury"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -40,7 +56,7 @@
                         <viewControllerLayoutGuide type="bottom" id="v9H-3G-hDV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="vhG-Bo-TDL">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>

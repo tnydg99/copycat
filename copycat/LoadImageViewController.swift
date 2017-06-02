@@ -7,12 +7,12 @@
 //
 
 import UIKit
+import SafariServices
 
-class LoadImageViewController: UIViewController {
+class LoadImageViewController: UIViewController, SFSafariViewControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
     }
 
@@ -21,6 +21,15 @@ class LoadImageViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func loadImageButtonPressed(_ sender: UIButton) {
+        guard let url = URL(string: "https://www.google.com") else {
+            return
+        }
+        
+        let safari = SFSafariViewController(url: url)
+        safari.delegate = self
+        present(safari, animated: true, completion: nil)
+    }
 
     /*
     // MARK: - Navigation
@@ -31,5 +40,13 @@ class LoadImageViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+//    func safariViewController(_ controller: SFSafariViewController, activityItemsFor URL: URL, title: String?) -> [UIActivity] {
+//        
+//    }
+    
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        performSegue(withIdentifier: "toCopycat", sender: nil)
+    }
 
 }

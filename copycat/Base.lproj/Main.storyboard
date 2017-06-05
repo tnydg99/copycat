@@ -86,5 +86,40 @@
             </objects>
             <point key="canvasLocation" x="972" y="-699"/>
         </scene>
+        <!--Image Picker Controller-->
+        <scene sceneID="mGQ-E3-Z9L">
+            <objects>
+                <navigationController storyboardIdentifier="UIImagePickerController" id="oxg-Fy-tzT" customClass="UIImagePickerController" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="O2w-Cf-7vn">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Ml9-xf-nAh" kind="relationship" relationship="rootViewController" id="YrE-AF-BJe"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sjR-8Z-bIX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1704" y="-699"/>
+        </scene>
+        <!--Select Photo-->
+        <scene sceneID="6Pv-Nw-7fs">
+            <objects>
+                <viewController id="Ml9-xf-nAh" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="kYf-GO-JuM"/>
+                        <viewControllerLayoutGuide type="bottom" id="5Ji-mE-0iq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ica-xF-mWb">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Select Photo" id="AIe-QW-4YT"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EXh-GB-gVS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2497" y="-699"/>
+        </scene>
     </scenes>
 </document>

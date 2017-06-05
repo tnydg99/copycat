@@ -7,15 +7,22 @@
 //
 
 import UIKit
+import Fabric
+import Crashlytics
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        Fabric.with([Crashlytics.self])
+        FirebaseApp.configure()
+        self.logUser("dummyValue")
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.makeKeyAndVisible()
+        window?.rootViewController = UINavigationController(rootViewController: LoginViewController())
         return true
     }
 
@@ -41,6 +48,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    func logUser(_ username: String) {
+        Crashlytics.sharedInstance().setUserName(username)
+    }
+    
 }
 

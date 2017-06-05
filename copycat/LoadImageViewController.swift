@@ -9,20 +9,40 @@
 import UIKit
 import SafariServices
 import Photos
+import Crashlytics
 
 class LoadImageViewController: UIViewController, SFSafariViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
+    
+    let loadImageButton: UIButton = {
+        let button = UIButton(type: UIButtonType.system)
+        button.backgroundColor = UIColor(r: 80, g: 101, b: 161)
+        button.setTitle("Load Image", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        return button
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        view.backgroundColor = UIColor(r: 61, g: 91, b: 151)
+        view.addSubview(loadImageButton)
+        loadImageButton.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(loadImageButtonPressed(_:))))
     }
     
-    @IBAction func loadImageButtonPressed(_ sender: UIButton) {
+    override func viewWillLayoutSubviews() {
+        setupLoadImageButton()
+    }
+    
+    func setupLoadImageButton() {
+        loadImageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        loadImageButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        loadImageButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
+        loadImageButton.heightAnchor.constraint(equalToConstant: 57).isActive = true
+    }
+    
+    func loadImageButtonPressed(_ sender: UIButton) {
         guard let url = URL(string: "https://images.google.com/") else {
             return
         }
@@ -53,16 +73,6 @@ class LoadImageViewController: UIViewController, SFSafariViewControllerDelegate,
         imageAlert.addAction(photosAction)
         present(imageAlert, animated: true, completion: nil)
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     //MARK SFSafariViewControllerDelegate
     

@@ -18,11 +18,22 @@ class LoadImageViewController: UIViewController, SFSafariViewControllerDelegate,
     let loadImageButton: UIButton = {
         let button = UIButton(type: UIButtonType.system)
         button.backgroundColor = UIColor(r: 80, g: 101, b: 161)
-        button.setTitle("Load Image", for: .normal)
+        button.setTitle("Load New Image", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.addTarget(self, action: #selector(loadImageButtonPressed(_:)), for: .touchUpInside)
+        return button
+    }()
+    
+    let previousImageButton: UIButton = {
+        let button = UIButton(type: UIButtonType.system)
+        button.backgroundColor = UIColor(r: 80, g: 101, b: 161)
+        button.setTitle("Select Previous Image", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        button.addTarget(self, action: #selector(previousImageButtonPressed(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -34,7 +45,25 @@ class LoadImageViewController: UIViewController, SFSafariViewControllerDelegate,
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logoutButtonPressed(_:)))
         view.backgroundColor = UIColor(r: 61, g: 91, b: 151)
         view.addSubview(loadImageButton)
+        view.addSubview(previousImageButton)
         setupLoadImageButton()
+        setupPreviousImageButton()
+        displayWelcomeMessage()
+    }
+    
+    func displayWelcomeMessage() {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            print("no firebase user logged in")
+            return
+        }
+        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: {(snapshot) in
+            if let dictionary = snapshot.value as? [String: Any] {
+                let alert = UIAlertController(title: "Login Successful", message: "Welcome back, \(dictionary["name"] as! String).", preferredStyle: .alert)
+                let alertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alert.addAction(alertAction)
+                self.present(alert, animated: true, completion: nil)
+            }
+        }, withCancel: nil)
     }
     
     func logoutButtonPressed(_ sender: UIBarButtonItem) {
@@ -50,9 +79,16 @@ class LoadImageViewController: UIViewController, SFSafariViewControllerDelegate,
     
     func setupLoadImageButton() {
         loadImageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        loadImageButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        loadImageButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50).isActive = true
         loadImageButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
         loadImageButton.heightAnchor.constraint(equalToConstant: 57).isActive = true
+    }
+    
+    func setupPreviousImageButton() {
+        previousImageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        previousImageButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 30).isActive = true
+        previousImageButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
+        previousImageButton.heightAnchor.constraint(equalToConstant: 57).isActive = true
     }
     
     func loadImageButtonPressed(_ sender: UIButton) {
@@ -83,6 +119,10 @@ class LoadImageViewController: UIViewController, SFSafariViewControllerDelegate,
         imageAlert.addAction(safariAction)
         imageAlert.addAction(photosAction)
         present(imageAlert, animated: true, completion: nil)
+    }
+    
+    func previousImageButtonPressed(_ sender: UIButton) {
+        
     }
     
     //MARK SFSafariViewControllerDelegate

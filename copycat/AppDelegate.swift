@@ -10,6 +10,7 @@ import UIKit
 import Fabric
 import Crashlytics
 import Firebase
+import FirebaseAuth
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,7 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         Fabric.with([Crashlytics.self])
         FirebaseApp.configure()
-        self.logUser("dummyValue")
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         window?.rootViewController = UINavigationController(rootViewController: LoginViewController())
@@ -45,12 +45,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        if Auth.auth().currentUser?.uid != nil {
+            do {
+                try Auth.auth().signOut()
+            } catch {
+                print(error)
+            }
+        }
     }
-
-    func logUser(_ username: String) {
-        Crashlytics.sharedInstance().setUserName(username)
-    }
-    
 }
 

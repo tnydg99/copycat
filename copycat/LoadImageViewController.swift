@@ -7,9 +7,11 @@
 //
 
 import UIKit
-import SafariServices
 import Photos
+import Firebase
+import FirebaseAuth
 import Crashlytics
+import SafariServices
 
 class LoadImageViewController: UIViewController, SFSafariViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -20,19 +22,30 @@ class LoadImageViewController: UIViewController, SFSafariViewControllerDelegate,
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        button.addTarget(self, action: #selector(loadImageButtonPressed(_:)), for: .touchUpInside)
         return button
     }()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.barStyle = .blackOpaque
+        self.navigationController?.navigationBar.isHidden = false
+        self.navigationItem.title = "Load Image"
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logoutButtonPressed(_:)))
         view.backgroundColor = UIColor(r: 61, g: 91, b: 151)
         view.addSubview(loadImageButton)
-        loadImageButton.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(loadImageButtonPressed(_:))))
+        setupLoadImageButton()
     }
     
-    override func viewWillLayoutSubviews() {
-        setupLoadImageButton()
+    func logoutButtonPressed(_ sender: UIBarButtonItem) {
+        if Auth.auth().currentUser?.uid != nil {
+            do {
+                try Auth.auth().signOut()
+                self.navigationController?.popViewController(animated: true)
+            } catch {
+                print(error)
+            }
+        }
     }
     
     func setupLoadImageButton() {
@@ -55,9 +68,7 @@ class LoadImageViewController: UIViewController, SFSafariViewControllerDelegate,
         })
         let photosAction = UIAlertAction(title: "Photos", style: .default, handler: {
         _ in
-            guard let imagePicker = self.storyboard?.instantiateViewController(withIdentifier: "UIImagePickerController") as? UIImagePickerController else {
-                return
-            }
+            let imagePicker = UIImagePickerController(rootViewController: ImagePickerViewController())
             imagePicker.allowsEditing = false
             imagePicker.sourceType = .photoLibrary
             imagePicker.delegate = self
@@ -81,16 +92,17 @@ class LoadImageViewController: UIViewController, SFSafariViewControllerDelegate,
 //    }
     
     func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        performSegue(withIdentifier: "toCopycat", sender: nil)
+        self.navigationController?.pushViewController(CopyCatViewController(), animated: true)
     }
     
     //MARK ImagePickerControllerDelegate
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        performSegue(withIdentifier: "toCopycat", sender: nil)
+        self.navigationController?.pushViewController(CopyCatViewController(), animated: true)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
     }
 
 }

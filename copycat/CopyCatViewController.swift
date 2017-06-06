@@ -1,15 +1,14 @@
 //
-//  ImagePickerViewController.swift
+//  CopyCatViewController.swift
 //  copycat
 //
-//  Created by Austin Tucker on 6/2/17.
+//  Created by Austin Tucker on 6/6/17.
 //  Copyright © 2017 Austin Tucker. All rights reserved.
 //
 
 import UIKit
-import Crashlytics
 
-class ImagePickerViewController: UIViewController {
+class CopyCatViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

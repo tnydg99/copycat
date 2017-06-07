@@ -90,11 +90,15 @@ class LoginViewController: UIViewController {
         (user, error) in
             if error != nil {
                 print(error ?? "error")
+                let alert = UIAlertController(title: "Error", message: "Username/password invalid.", preferredStyle: .alert)
+                let alertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alert.addAction(alertAction)
+                self.present(alert, animated: true, completion: nil)
                 return
             }
+            Crashlytics.sharedInstance().setUserEmail(email)
+            self.navigationController?.pushViewController(LoadImageViewController(), animated: true)
         })
-        Crashlytics.sharedInstance().setUserEmail(email)
-        self.navigationController?.pushViewController(LoadImageViewController(), animated: true)
     }
     
     func handleLoginRegister(_ sender: UIButton) {
@@ -104,7 +108,7 @@ class LoginViewController: UIViewController {
         case 1:
             handleRegister()
         default:
-            print("this should not execute")
+            Crashlytics.sharedInstance().throwException()
         }
     }
     

@@ -10,6 +10,7 @@ import UIKit
 import Photos
 import Firebase
 import FirebaseAuth
+import FirebaseStorage
 import Crashlytics
 import SafariServices
 
@@ -104,8 +105,8 @@ class LoadImageViewController: UIViewController, SFSafariViewControllerDelegate,
         })
         let photosAction = UIAlertAction(title: "Photos", style: .default, handler: {
         _ in
-            let imagePicker = UIImagePickerController(rootViewController: ImagePickerViewController())
-            imagePicker.allowsEditing = false
+            let imagePicker = UIImagePickerController()
+            imagePicker.allowsEditing = true
             imagePicker.sourceType = .photoLibrary
             imagePicker.delegate = self
             if let mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary) {
@@ -127,10 +128,6 @@ class LoadImageViewController: UIViewController, SFSafariViewControllerDelegate,
     
     //MARK SFSafariViewControllerDelegate
     
-//    func safariViewController(_ controller: SFSafariViewController, activityItemsFor URL: URL, title: String?) -> [UIActivity] {
-//        
-//    }
-    
     func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
         self.navigationController?.pushViewController(CopyCatViewController(), animated: true)
     }
@@ -138,11 +135,49 @@ class LoadImageViewController: UIViewController, SFSafariViewControllerDelegate,
     //MARK ImagePickerControllerDelegate
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
         self.navigationController?.pushViewController(CopyCatViewController(), animated: true)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
+        DispatchQueue.global().async {
+            var selectedImage: UIImage?
+            if info.keys.contains(UIImagePickerControllerEditedImage) {
+                selectedImage = info[UIImagePickerControllerEditedImage] as? UIImage
+            } else {
+                selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage
+            }
+            guard let pngImage = UIImagePNGRepresentation(selectedImage!) else {
+                print("image is nil")
+                return
+            }
+            let uuid = UUID()
+            let imageName = "\(uuid.uuidString).png"
+            let storage = Storage.storage().reference().child(imageName)
+            storage.putData(pngImage, metadata: nil, completion: {
+                (metadata, error) in
+                if error != nil {
+                    print(error ?? "error")
+                    return
+                }
+                guard let uid = Auth.auth().currentUser?.uid else {
+                    return
+                }
+                let reference: DatabaseReference = Database.database().reference()
+                let imageReference = reference.child("users").child(uid).child("storedImages")
+                
+                guard let values = ["\(uuid.uuidString)" : metadata?.downloadURL()?.absoluteString] as? [String: String] else {
+                    return
+                }
+                imageReference.updateChildValues(values, withCompletionBlock: {
+                    (err, reference) in
+                    if err != nil {
+                        print(err ?? "error")
+                        return
+                    }
+                })
+            })
+        }
+        picker.popViewController(animated: true)
     }
-
 }

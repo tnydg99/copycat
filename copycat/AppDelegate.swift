@@ -10,7 +10,6 @@ import UIKit
 import Fabric
 import Crashlytics
 import Firebase
-import FirebaseAuth
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -27,13 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        if Auth.auth().currentUser?.uid != nil {
-            do {
-                try Auth.auth().signOut()
-            } catch {
-                print(error)
-            }
-        }
+        let viewModel = ViewModel()
+        _ = viewModel.firebaseLogsOut()
     }
 }
 

@@ -12,14 +12,15 @@
 		D935A1961EE5EC5D005DA24A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D935A1951EE5EC5D005DA24A /* Main.storyboard */; };
 		D935A19A1EE625C4005DA24A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D935A1991EE625C4005DA24A /* GoogleService-Info.plist */; };
 		D93C20BC1EE662AE0039F303 /* CopyCatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93C20BB1EE662AE0039F303 /* CopyCatViewController.swift */; };
-		D93C20C01EE76F4B0039F303 /* CacheModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93C20BF1EE76F4B0039F303 /* CacheModel.swift */; };
+		D93C20C01EE76F4B0039F303 /* FirebaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93C20BF1EE76F4B0039F303 /* FirebaseModel.swift */; };
+		D96108321EE78F030066EABD /* ImagesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D96108311EE78F030066EABD /* ImagesCollectionViewController.swift */; };
+		D96108341EE87B370066EABD /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D96108331EE87B370066EABD /* ViewModel.swift */; };
 		D9E70A8A1EE1BD4C00710F0F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E70A891EE1BD4C00710F0F /* AppDelegate.swift */; };
 		D9E70A911EE1BD4D00710F0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9E70A901EE1BD4D00710F0F /* Assets.xcassets */; };
 		D9E70A941EE1BD4D00710F0F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9E70A921EE1BD4D00710F0F /* LaunchScreen.storyboard */; };
 		D9E70A9F1EE1BD4D00710F0F /* copycatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E70A9E1EE1BD4D00710F0F /* copycatTests.swift */; };
 		D9E70AAA1EE1BD4D00710F0F /* copycatUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E70AA91EE1BD4D00710F0F /* copycatUITests.swift */; };
 		D9E70AB81EE1E0B800710F0F /* LoadImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E70AB71EE1E0B800710F0F /* LoadImageViewController.swift */; };
-		D9E70ABC1EE1F10E00710F0F /* ImagePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E70ABB1EE1F10E00710F0F /* ImagePickerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,7 +47,9 @@
 		D935A1951EE5EC5D005DA24A /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		D935A1991EE625C4005DA24A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D93C20BB1EE662AE0039F303 /* CopyCatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyCatViewController.swift; sourceTree = "<group>"; };
-		D93C20BF1EE76F4B0039F303 /* CacheModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheModel.swift; sourceTree = "<group>"; };
+		D93C20BF1EE76F4B0039F303 /* FirebaseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseModel.swift; sourceTree = "<group>"; };
+		D96108311EE78F030066EABD /* ImagesCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagesCollectionViewController.swift; sourceTree = "<group>"; };
+		D96108331EE87B370066EABD /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		D9E70A861EE1BD4C00710F0F /* copycat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = copycat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9E70A891EE1BD4C00710F0F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D9E70A901EE1BD4D00710F0F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -59,7 +62,6 @@
 		D9E70AA91EE1BD4D00710F0F /* copycatUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = copycatUITests.swift; sourceTree = "<group>"; };
 		D9E70AAB1EE1BD4D00710F0F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D9E70AB71EE1E0B800710F0F /* LoadImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadImageViewController.swift; sourceTree = "<group>"; };
-		D9E70ABB1EE1F10E00710F0F /* ImagePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerViewController.swift; sourceTree = "<group>"; };
 		DFD682778199792E40182BEC /* Pods-copycat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-copycat.release.xcconfig"; path = "Pods/Target Support Files/Pods-copycat/Pods-copycat.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -165,7 +167,7 @@
 				D93C20BB1EE662AE0039F303 /* CopyCatViewController.swift */,
 				D935A1931EE5E83C005DA24A /* LoginViewController.swift */,
 				D9E70AB71EE1E0B800710F0F /* LoadImageViewController.swift */,
-				D9E70ABB1EE1F10E00710F0F /* ImagePickerViewController.swift */,
+				D96108311EE78F030066EABD /* ImagesCollectionViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -183,7 +185,8 @@
 			isa = PBXGroup;
 			children = (
 				D9E70A891EE1BD4C00710F0F /* AppDelegate.swift */,
-				D93C20BF1EE76F4B0039F303 /* CacheModel.swift */,
+				D93C20BF1EE76F4B0039F303 /* FirebaseModel.swift */,
+				D96108331EE87B370066EABD /* ViewModel.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -391,12 +394,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D93C20C01EE76F4B0039F303 /* CacheModel.swift in Sources */,
+				D93C20C01EE76F4B0039F303 /* FirebaseModel.swift in Sources */,
 				D935A1941EE5E83C005DA24A /* LoginViewController.swift in Sources */,
 				D93C20BC1EE662AE0039F303 /* CopyCatViewController.swift in Sources */,
-				D9E70ABC1EE1F10E00710F0F /* ImagePickerViewController.swift in Sources */,
+				D96108321EE78F030066EABD /* ImagesCollectionViewController.swift in Sources */,
 				D9E70AB81EE1E0B800710F0F /* LoadImageViewController.swift in Sources */,
 				D9E70A8A1EE1BD4C00710F0F /* AppDelegate.swift in Sources */,
+				D96108341EE87B370066EABD /* ViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

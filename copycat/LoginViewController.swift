@@ -7,16 +7,39 @@
 //
 
 import UIKit
-import Firebase
-import FirebaseAuth
 import Crashlytics
 
 class LoginViewController: UIViewController {
     
-    var inputsContainerViewHeightAnchor: NSLayoutConstraint?
-    var nameTextFieldHeightAnchor: NSLayoutConstraint?
-    var emailTextFieldHeightAnchor: NSLayoutConstraint?
-    var passwordTextFieldHeightAnchor: NSLayoutConstraint?
+    let viewModel = ViewModel()
+    //MARK View functions
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.navigationController?.navigationBar.barStyle = .blackOpaque
+        view.backgroundColor = UIColor(r: 61, g: 91, b: 151)
+        view.addSubview(copycatTitle)
+        view.addSubview(copycatImageView)
+        view.addSubview(loginRegisterSegmentedControl)
+        view.addSubview(inputsContainerView)
+        view.addSubview(loginRegisterButton)
+        setupCopycatLabel()
+        setupCopycatImageView()
+        setupLoginRegisterSegmentedControl()
+        setupInputsContainerView()
+        setupLoginRegisterButton()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = true
+        nameTextField.text = ""
+        emailTextField.text = ""
+        passwordTextField.text = ""
+    }
+    
+    //MARK UIComponents
+    
+    //MARK Copycat title label and constraints
     
     let copycatTitle: UILabel = {
         let label = UILabel()
@@ -28,13 +51,31 @@ class LoginViewController: UIViewController {
         return label
     }()
     
-    let profileImageView: UIImageView = {
+    func setupCopycatLabel() {
+        copycatTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        copycatTitle.bottomAnchor.constraint(equalTo: copycatImageView.topAnchor, constant: -12).isActive = true
+        copycatTitle.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
+        copycatTitle.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+    
+    //MARK Copycat image view and constraints
+    
+    let copycatImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "copycat")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
+    
+    func setupCopycatImageView() {
+        copycatImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        copycatImageView.bottomAnchor.constraint(equalTo: loginRegisterSegmentedControl.topAnchor, constant: -12).isActive = true
+        copycatImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        copycatImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+    }
+    
+    //MARK Login/Register segmented control, constraints & selector function
     
     let loginRegisterSegmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(items: ["Login", "Register"])
@@ -44,6 +85,13 @@ class LoginViewController: UIViewController {
         segmentedControl.addTarget(self, action: #selector(loginRegisterSegmentedControlChanged(_:)), for: .valueChanged)
         return segmentedControl
     }()
+    
+    func setupLoginRegisterSegmentedControl() {
+        loginRegisterSegmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        loginRegisterSegmentedControl.bottomAnchor.constraint(equalTo: inputsContainerView.topAnchor, constant: -12).isActive = true
+        loginRegisterSegmentedControl.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
+        loginRegisterSegmentedControl.heightAnchor.constraint(equalToConstant: 36).isActive = true
+    }
     
     func loginRegisterSegmentedControlChanged(_ sender: UISegmentedControl) {
         let title = sender.titleForSegment(at: sender.selectedSegmentIndex)
@@ -61,6 +109,13 @@ class LoginViewController: UIViewController {
         passwordTextFieldHeightAnchor?.isActive = true
     }
     
+    //MARK Input container view variables, UI components, and corresponding constraints
+    
+    var inputsContainerViewHeightAnchor: NSLayoutConstraint?
+    var nameTextFieldHeightAnchor: NSLayoutConstraint?
+    var emailTextFieldHeightAnchor: NSLayoutConstraint?
+    var passwordTextFieldHeightAnchor: NSLayoutConstraint?
+    
     let inputsContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
@@ -69,78 +124,6 @@ class LoginViewController: UIViewController {
         view.layer.masksToBounds = true
         return view
     }()
-    
-    let loginRegisterButton: UIButton = {
-        let button = UIButton(type: UIButtonType.system)
-        button.backgroundColor = UIColor(r: 80, g: 101, b: 161)
-        button.setTitle("Register", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        button.addTarget(self, action: #selector(handleLoginRegister(_:)), for: .touchUpInside)
-        return button
-    }()
-    
-    func handleLogin() {
-        guard let email = emailTextField.text, let password = passwordTextField.text else {
-            print("missing fields")
-            return
-        }
-        Auth.auth().signIn(withEmail: email, password: password, completion: {
-        (user, error) in
-            if error != nil {
-                print(error ?? "error")
-                let alert = UIAlertController(title: "Error", message: "Username/password invalid.", preferredStyle: .alert)
-                let alertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-                alert.addAction(alertAction)
-                self.present(alert, animated: true, completion: nil)
-                return
-            }
-            Crashlytics.sharedInstance().setUserEmail(email)
-            self.navigationController?.pushViewController(LoadImageViewController(), animated: true)
-        })
-    }
-    
-    func handleLoginRegister(_ sender: UIButton) {
-        switch loginRegisterSegmentedControl.selectedSegmentIndex {
-        case 0:
-            handleLogin()
-        case 1:
-            handleRegister()
-        default:
-            Crashlytics.sharedInstance().throwException()
-        }
-    }
-    
-    func handleRegister() {
-        guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text else {
-            print("missing fields")
-            return
-        }
-        Auth.auth().createUser(withEmail: email, password: password, completion: {
-        (user, error) in
-            if error != nil {
-                print(error ?? "error")
-                return
-            }
-            
-            guard let uid = user?.uid else {
-                return
-            }
-            let reference: DatabaseReference = Database.database().reference()
-            let usersReference = reference.child("users").child(uid)
-            let values = ["name": name, "email": email]
-            usersReference.updateChildValues(values, withCompletionBlock: {
-            (err, reference) in
-                if err != nil {
-                    print(err ?? "error")
-                    return
-                }
-                Crashlytics.sharedInstance().setUserEmail(email)
-                self.navigationController?.pushViewController(LoadImageViewController(), animated: true)
-            })
-        })
-    }
     
     let nameTextField: UITextField = {
         let textField = UITextField()
@@ -177,50 +160,6 @@ class LoginViewController: UIViewController {
         textField.isSecureTextEntry = true
         return textField
     }()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.navigationController?.navigationBar.barStyle = .blackOpaque
-        view.backgroundColor = UIColor(r: 61, g: 91, b: 151)
-        view.addSubview(copycatTitle)
-        view.addSubview(profileImageView)
-        view.addSubview(loginRegisterSegmentedControl)
-        view.addSubview(inputsContainerView)
-        view.addSubview(loginRegisterButton)
-        setupCopycatLabel()
-        setupProfileImageView()
-        setupLoginRegisterSegmentedControl()
-        setupInputsContainerView()
-        setupLoginRegisterButton()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.isHidden = true
-        nameTextField.text = ""
-        emailTextField.text = ""
-        passwordTextField.text = ""
-    }
-    
-    func setupCopycatLabel() {
-        copycatTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        copycatTitle.bottomAnchor.constraint(equalTo: profileImageView.topAnchor, constant: -12).isActive = true
-        copycatTitle.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
-        copycatTitle.heightAnchor.constraint(equalToConstant: 50).isActive = true
-    }
-    
-    func setupProfileImageView() {
-        profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        profileImageView.bottomAnchor.constraint(equalTo: loginRegisterSegmentedControl.topAnchor, constant: -12).isActive = true
-        profileImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        profileImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
-    }
-    
-    func setupLoginRegisterSegmentedControl() {
-        loginRegisterSegmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        loginRegisterSegmentedControl.bottomAnchor.constraint(equalTo: inputsContainerView.topAnchor, constant: -12).isActive = true
-        loginRegisterSegmentedControl.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
-        loginRegisterSegmentedControl.heightAnchor.constraint(equalToConstant: 36).isActive = true
-    }
     
     func setupInputsContainerView() {
         inputsContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -264,14 +203,69 @@ class LoginViewController: UIViewController {
         passwordTextFieldHeightAnchor?.isActive = true
     }
     
+    //MARK Login/Register button and constraints and selector function
+    
+    let loginRegisterButton: UIButton = {
+        let button = UIButton(type: UIButtonType.system)
+        button.backgroundColor = UIColor(r: 80, g: 101, b: 161)
+        button.setTitle("Register", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        button.addTarget(self, action: #selector(handleLoginRegister(_:)), for: .touchUpInside)
+        return button
+    }()
+    
     func setupLoginRegisterButton() {
         loginRegisterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginRegisterButton.topAnchor.constraint(equalTo: inputsContainerView.bottomAnchor, constant: 12).isActive = true
         loginRegisterButton.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
         loginRegisterButton.heightAnchor.constraint(equalToConstant: 57).isActive = true
     }
+    
+    func handleLoginRegister(_ sender: UIButton) {
+        switch loginRegisterSegmentedControl.selectedSegmentIndex {
+        case 0:
+            loginUser()
+        case 1:
+            registerUser()
+        default:
+            Crashlytics.sharedInstance().throwException()
+        }
+    }
+    
+    func loginUser() {
+        guard let email = emailTextField.text, let password = passwordTextField.text else {
+            print("missing fields")
+            return
+        }
+        if viewModel.firebaseLogsIn(email: email, password: password) {
+            self.navigationController?.pushViewController(LoadImageViewController(), animated: true)
+        } else {
+            let alert = UIAlertController(title: "Error", message: "Username/password invalid.", preferredStyle: .alert)
+            let alertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alert.addAction(alertAction)
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func registerUser(){
+        guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text else {
+            print("missing fields")
+            return
+        }
+        if viewModel.firebaseRegisters(email: email, password: password, name: name) {
+            self.navigationController?.pushViewController(LoadImageViewController(), animated: true)
+        } else {
+            let alert = UIAlertController(title: "Error", message: "Registration not valid.", preferredStyle: .alert)
+            let alertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alert.addAction(alertAction)
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
 }
 
+//MARK UIColor convenience initializer
 extension UIColor {
     convenience init(r: CGFloat, g: CGFloat, b: CGFloat) {
         self.init(red: r/255, green: g/255, blue: b/255, alpha: 1)

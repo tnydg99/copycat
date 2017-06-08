@@ -1,5 +1,5 @@
 //
-//  ViewModel.swift
+//  FirebaseViewModel.swift
 //  copycat
 //
 //  Created by Austin Tucker on 6/7/17.
@@ -11,17 +11,20 @@ import FirebaseAuth
 import FirebaseDatabase
 import Crashlytics
 
-class ViewModel: FirebaseFetchDelegate {
+class FirebaseViewModel: FirebaseFetchDelegate {
     let storedImages: [Data] = {
         return FirebaseModel.sharedInstance.storedImages
     }()
     
-    func firebaseRegisters(email: String, password: String, name: String) -> Bool {
-        var registration: Bool = false
+    var login: Bool?
+    var username: String = ""
+    
+    func firebaseRegisterUser(email: String, password: String, name: String) {
         Auth.auth().createUser(withEmail: email, password: password, completion: {
             (user, error) in
             if error != nil {
                 print(error ?? "error")
+                self.login = false
                 return
             }
             
@@ -35,57 +38,53 @@ class ViewModel: FirebaseFetchDelegate {
                 (err, reference) in
                 if err != nil {
                     print(err ?? "error")
+                    self.login = false
                     return
                 }
                 Crashlytics.sharedInstance().setUserEmail(email)
-                registration = true
+                self.login = true
             })
         })
-        return registration
     }
     
-    func firebaseLogsIn(email: String, password: String) -> Bool {
-        var login: Bool = false
+    func firebaseLoginUser(email: String, password: String) {
         Auth.auth().signIn(withEmail: email, password: password, completion: {
             (user, error) in
             if error != nil {
                 print(error ?? "error")
+                self.login = false
                 return
             }
             Crashlytics.sharedInstance().setUserEmail(email)
-            login = true
+            self.login = true
         })
-        return login
     }
     
-    func firebaseLogsOut() -> Bool {
-        var logout: Bool = true
+    func firebaseLogoutUser() {
         if Auth.auth().currentUser?.uid != nil {
             do {
                 try Auth.auth().signOut()
+                self.login = false
             } catch {
                 print(error)
-                logout = false
+                self.login = true
             }
         }
-        return logout
     }
     
-    func firebaseFetchUsername() -> String {
-        var name: String = ""
+    func firebaseFetchUsername() {
         guard let uid = Auth.auth().currentUser?.uid else {
             print("no firebase user logged in")
-            return name
+            return
         }
         Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: {(snapshot) in
             if let dictionary = snapshot.value as? [String: Any] {
-                name = dictionary["name"] as! String
+                self.username = dictionary["name"] as! String
             }
         }, withCancel: nil)
-        return name
     }
 
-    func storeSelectedImageFromPicker(info: [String : Any]) {
+    func firebaseStoreImage(info: [String : Any]) {
         DispatchQueue.global().async {
             var image: UIImage?
             if info.keys.contains(UIImagePickerControllerEditedImage) {
@@ -99,7 +98,7 @@ class ViewModel: FirebaseFetchDelegate {
         }
     }
     
-    func getDataFromFirebase() {
+    func firebaseGetData() {
         FirebaseModel.sharedInstance.fetchImagesFromFirebase()
     }
 }

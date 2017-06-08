@@ -11,7 +11,9 @@ import Crashlytics
 
 class LoginViewController: UIViewController {
     
-    let viewModel = ViewModel()
+    let firebaseViewModel = FirebaseViewModel()
+    var loggedIn: Bool?
+    
     //MARK View functions
     
     override func viewDidLoad() {
@@ -239,14 +241,17 @@ class LoginViewController: UIViewController {
             print("missing fields")
             return
         }
-        if viewModel.firebaseLogsIn(email: email, password: password) {
-            self.navigationController?.pushViewController(LoadImageViewController(), animated: true)
-        } else {
-            let alert = UIAlertController(title: "Error", message: "Username/password invalid.", preferredStyle: .alert)
-            let alertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alert.addAction(alertAction)
-            self.present(alert, animated: true, completion: nil)
-        }
+        firebaseViewModel.firebaseLoginUser(email: email, password: password)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: {
+            if let _ = self.firebaseViewModel.login {
+                self.navigationController?.pushViewController(LoadImageViewController(), animated: true)
+            } else {
+                let alert = UIAlertController(title: "Error", message: "Username/password invalid.", preferredStyle: .alert)
+                let alertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alert.addAction(alertAction)
+                self.present(alert, animated: true, completion: nil)
+            }
+        })
     }
     
     func registerUser(){
@@ -254,14 +259,17 @@ class LoginViewController: UIViewController {
             print("missing fields")
             return
         }
-        if viewModel.firebaseRegisters(email: email, password: password, name: name) {
-            self.navigationController?.pushViewController(LoadImageViewController(), animated: true)
-        } else {
-            let alert = UIAlertController(title: "Error", message: "Registration not valid.", preferredStyle: .alert)
-            let alertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alert.addAction(alertAction)
-            self.present(alert, animated: true, completion: nil)
-        }
+        firebaseViewModel.firebaseRegisterUser(email: email, password: password, name: name)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: {
+            if let _ = self.firebaseViewModel.login {
+                self.navigationController?.pushViewController(LoadImageViewController(), animated: true)
+            } else {
+                let alert = UIAlertController(title: "Error", message: "Registration not valid.", preferredStyle: .alert)
+                let alertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alert.addAction(alertAction)
+                self.present(alert, animated: true, completion: nil)
+            }
+        })
     }
 }
 

@@ -26,8 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        let viewModel = ViewModel()
-        _ = viewModel.firebaseLogsOut()
+        let firebaseViewModel = FirebaseViewModel()
+        _ = firebaseViewModel.firebaseLogoutUser()
     }
 }
 

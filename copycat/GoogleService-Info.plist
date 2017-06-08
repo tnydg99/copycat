@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>162834295410-sfslgskv60rtcqq6c9ls61qoe1b7nuqd.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.162834295410-sfslgskv60rtcqq6c9ls61qoe1b7nuqd</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAwMcNlQNqCc_CacmUJSRHm6WuTDUrvGGo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>162834295410</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.austintucker.copycat</string>
+	<key>PROJECT_ID</key>
+	<string>copycat-888cc</string>
+	<key>STORAGE_BUCKET</key>
+	<string>copycat-888cc.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:162834295410:ios:c903ca543ff52c8a</string>
+	<key>DATABASE_URL</key>
+	<string>https://copycat-888cc.firebaseio.com</string>
+</dict>
+</plist>

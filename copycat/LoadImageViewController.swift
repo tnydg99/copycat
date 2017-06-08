@@ -13,7 +13,7 @@ import SafariServices
 
 class LoadImageViewController: UIViewController, UINavigationControllerDelegate {
     
-    let viewModel = ViewModel()
+    let firebaseViewModel = FirebaseViewModel()
     
     //MARK view functions
     override func viewDidLoad() {
@@ -69,9 +69,12 @@ class LoadImageViewController: UIViewController, UINavigationControllerDelegate 
     }
     
     func logoutButtonPressed(_ sender: UIBarButtonItem) {
-        if viewModel.firebaseLogsOut() {
-            self.navigationController?.popViewController(animated: true)
-        }
+        firebaseViewModel.firebaseLogoutUser()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: {
+            if let _ = self.firebaseViewModel.login {
+                self.navigationController?.popViewController(animated: true)
+            }
+        })
     }
     
     func loadImageButtonPressed(_ sender: UIButton) {
@@ -109,12 +112,15 @@ class LoadImageViewController: UIViewController, UINavigationControllerDelegate 
     }
     
     func displayWelcomeMessage() {
-        if viewModel.firebaseFetchUsername() != "" {
-            let alert = UIAlertController(title: "Login Successful", message: "Welcome back, \(viewModel.firebaseFetchUsername())).", preferredStyle: .alert)
-            let alertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alert.addAction(alertAction)
-            self.present(alert, animated: true, completion: nil)
-        }
+        firebaseViewModel.firebaseFetchUsername()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: {
+            if self.firebaseViewModel.username != "" {
+                let alert = UIAlertController(title: "Login Successful", message: "Welcome back, \(self.firebaseViewModel.username).", preferredStyle: .alert)
+                let alertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alert.addAction(alertAction)
+                self.present(alert, animated: true, completion: nil)
+            }
+        })
     }
 }
 
@@ -133,7 +139,7 @@ extension LoadImageViewController: UIImagePickerControllerDelegate {
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        viewModel.storeSelectedImageFromPicker(info: info)
+        firebaseViewModel.firebaseStoreImage(info: info)
         picker.popViewController(animated: true)
     }
 }

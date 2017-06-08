@@ -9,14 +9,14 @@
 import UIKit
 
 protocol FirebaseFetchDelegate: class {
-    func getDataFromFirebase()
+    func firebaseGetData()
 }
 
 private let reuseIdentifier = "Cell"
 
 class ImagesCollectionViewController: UIViewController, UICollectionViewDelegate {
     
-    let viewModel = ViewModel()
+    let firebaseViewModel = FirebaseViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,10 +27,10 @@ class ImagesCollectionViewController: UIViewController, UICollectionViewDelegate
         firebaseImagesCollectionView?.dataSource = self
         self.navigationController?.navigationBar.barStyle = .blackOpaque
         view.backgroundColor = UIColor(r: 61, g: 91, b: 151)
-        delegate = viewModel
+        delegate = firebaseViewModel
         //self.addObserver(self, forKeyPath: "CacheModel.sharedInstance.storedImages", options: .new, context: nil)
         DispatchQueue.global().async {
-            self.delegate?.getDataFromFirebase()
+            self.delegate?.firebaseGetData()
         }
     }
     
@@ -79,14 +79,14 @@ extension ImagesCollectionViewController: UICollectionViewDataSource {
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.storedImages.count
+        return firebaseViewModel.storedImages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
         // Configure the cell
         self.setupPreviousImageView(cell.contentView)
-        self.previousImageView.image = UIImage(data: viewModel.storedImages[indexPath.row])
+        self.previousImageView.image = UIImage(data: firebaseViewModel.storedImages[indexPath.row])
         cell.contentView.addSubview(self.previousImageView)
         return cell
     }
